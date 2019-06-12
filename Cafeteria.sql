@@ -8,7 +8,7 @@ create table Horario(
 
 create table Mesas(
 	ID_Mesa varchar(15) PRIMARY KEY,
-	ID_Mesero varchar(15)
+	numSillas int(2)
 );
 
 
@@ -32,7 +32,8 @@ create table Ingredientes(
 create table Orden(
 	NumOrden int PRIMARY KEY,
 	ID_Platillo varchar(15),
-	ID_Mesero varchar(15)
+	ID_Mesero varchar(15),
+	ID_Mesa varchar(15)
 );
 
 
@@ -76,12 +77,24 @@ create table Cocinero(
 	ID_Horario varchar(15)	
 );
 
+create table MesaMeseroOn(
+	contador int PRIMARY KEY,
+	ID_mesa varchar(15),
+	ID_Mesero varchar(15)
+);
+
 #Datos
 INSERT INTO Horario VALUES("Horario01","08:00","13:59");
 INSERT INTO Horario VALUES("Horario02","14:00","21:59");
 
-INSERT INTO Mesas VALUES("Mesa01","Mesero001");
-INSERT INTO Mesas VALUES("Mesa04","Mesero002");
+INSERT INTO Mesas VALUES("Mesa01",2);
+INSERT INTO Mesas VALUES("Mesa02",3);
+INSERT INTO Mesas VALUES("Mesa03",4);
+INSERT INTO Mesas VALUES("Mesa04",4);
+INSERT INTO Mesas VALUES("Mesa05",2);
+INSERT INTO Mesas VALUES("Mesa06",3);
+INSERT INTO Mesas VALUES("Mesa07",6);
+INSERT INTO Mesas VALUES("Mesa08",6);
 
 INSERT INTO Reservaciones VALUES("Reser01","12:00","Axel Perez","23/06/19","Cajero001");
 INSERT INTO Reservaciones VALUES("Reser02","17:00","Juan Guzman","12/05/19","Cajero002");
@@ -102,16 +115,19 @@ INSERT INTO Ingredientes VALUES("Ingre013","Mantequilla","11/02/20",8);
 INSERT INTO Ingredientes VALUES("Ingre014","Azucar glass","06/01/20",3);
 INSERT INTO Ingredientes VALUES("Ingre015","Chocolate en polvo","05/06/20",8);
 
-INSERT INTO Orden VALUES(1,"Platillo001","Mesero001");
-INSERT INTO Orden VALUES(2,"Platillo004","Mesero002");
-INSERT INTO Orden VALUES(3,"Platillo003","Mesero002");
-INSERT INTO Orden VALUES(4,"Platillo005","Mesero001");
+INSERT INTO Orden VALUES(1,"Platillo001","Mesero001","Mesa01");
+INSERT INTO Orden VALUES(2,"Platillo004","Mesero002","Mesa02");
+INSERT INTO Orden VALUES(3,"Platillo003","Mesero002","Mesa03");
+INSERT INTO Orden VALUES(4,"Platillo005","Mesero001","Mesa04");
 
 INSERT INTO Platillo VALUES("Platillo001","CupCakes");
 INSERT INTO Platillo VALUES("Platillo002","Malteada de mango");
 INSERT INTO Platillo VALUES("Platillo003","Sandwich queso");
 INSERT INTO Platillo VALUES("Platillo004","Sandwich jamon");
 INSERT INTO Platillo VALUES("Platillo005","CupCakes chocolate");
+INSERT INTO Platillo VALUES("Platillo006","Pay de jamón");
+INSERT INTO Platillo VALUES("Platillo007","Pastel de reese's");
+INSERT INTO Platillo VALUES("Platillo008","Niño envuelto dulce");
 
 INSERT INTO Ingre_Platillo VALUES("Ingre001","Platillo001");
 INSERT INTO Ingre_Platillo VALUES("Ingre002","Platillo001");
@@ -142,7 +158,6 @@ INSERT INTO Cocinero VALUES("Cocinero003","Aneth Ramires Velazquez","3467091245"
 INSERT INTO Cocinero VALUES("Cocinero004","Rosa Elpidia Cortez Ortigoza","5679089232","12345","Horario02");
 
 #LLAVES FORANEAS
-ALTER TABLE Mesas ADD FOREIGN KEY (ID_Mesero) REFERENCES Mesero(ID_Mesero);
 ALTER TABLE Reservaciones ADD FOREIGN KEY (ID_Cajero) REFERENCES Cajero(ID_Cajero);
 ALTER TABLE Ingre_Platillo ADD FOREIGN KEY (ID_Ingrediente) REFERENCES Ingredientes(ID_Ingrediente);
 ALTER TABLE Ingre_Platillo ADD FOREIGN KEY (ID_Platillo) REFERENCES Platillo(ID_Platillo);
@@ -151,3 +166,4 @@ ALTER TABLE Orden ADD FOREIGN KEY (ID_Mesero) REFERENCES Mesero(ID_Mesero);
 ALTER TABLE Mesero ADD FOREIGN KEY (ID_Horario) REFERENCES Horario(ID_Horario);
 ALTER TABLE Cajero ADD FOREIGN KEY (ID_Horario) REFERENCES Horario(ID_Horario);
 ALTER TABLE Cocinero ADD FOREIGN KEY (ID_Horario) REFERENCES Horario(ID_Horario);
+ALTER TABLE orden ADD FOREIGN KEY (ID_mesa) REFERENCES Mesas(ID_mesa);
